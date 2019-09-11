@@ -1,0 +1,152 @@
+<HTML>
+	<HEAD>
+		<TITLE>Gate Control v.1.0</TITLE>
+        <style>
+            body {background-color: powderblue;}
+            h1   {color: Black;}
+            p    {color: red;}
+            .OpenButton {
+                -moz-box-shadow:inset 0px 1px 0px 0px #a4e271;
+                -webkit-box-shadow:inset 0px 1px 0px 0px #a4e271;
+                box-shadow:inset 0px 1px 0px 0px #a4e271;
+                background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #89c403), color-stop(1, #77a809));
+                background:-moz-linear-gradient(top, #89c403 5%, #77a809 100%);
+                background:-webkit-linear-gradient(top, #89c403 5%, #77a809 100%);
+                background:-o-linear-gradient(top, #89c403 5%, #77a809 100%);
+                background:-ms-linear-gradient(top, #89c403 5%, #77a809 100%);
+                background:linear-gradient(to bottom, #89c403 5%, #77a809 100%);
+                filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#89c403', endColorstr='#77a809',GradientType=0);
+                background-color:#89c403;
+                -moz-border-radius:6px;
+                -webkit-border-radius:6px;
+                border-radius:6px;
+                border:1px solid #74b807;
+                display:inline-block;
+                cursor:pointer;
+                color:#ffffff;
+                font-family:Arial;
+                font-size:15px;
+                font-weight:bold;
+                padding:15px 76px;
+                text-decoration:none;
+                text-shadow:0px 1px 0px #528009;
+                margin-top: 20px;
+            }
+            .OpenButton:hover {
+                background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #77a809), color-stop(1, #89c403));
+                background:-moz-linear-gradient(top, #77a809 5%, #89c403 100%);
+                background:-webkit-linear-gradient(top, #77a809 5%, #89c403 100%);
+                background:-o-linear-gradient(top, #77a809 5%, #89c403 100%);
+                background:-ms-linear-gradient(top, #77a809 5%, #89c403 100%);
+                background:linear-gradient(to bottom, #77a809 5%, #89c403 100%);
+                filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#77a809', endColorstr='#89c403',GradientType=0);
+                background-color:#77a809;
+            }
+            .OpenButton:active {
+                position:relative;
+                top:1px;
+            }
+            .CloseButton {
+                -moz-box-shadow:inset 0px 1px 0px 0px #cf866c;
+                -webkit-box-shadow:inset 0px 1px 0px 0px #cf866c;
+                box-shadow:inset 0px 1px 0px 0px #cf866c;
+                background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #d0451b), color-stop(1, #bc3315));
+                background:-moz-linear-gradient(top, #d0451b 5%, #bc3315 100%);
+                background:-webkit-linear-gradient(top, #d0451b 5%, #bc3315 100%);
+                background:-o-linear-gradient(top, #d0451b 5%, #bc3315 100%);
+                background:-ms-linear-gradient(top, #d0451b 5%, #bc3315 100%);
+                background:linear-gradient(to bottom, #d0451b 5%, #bc3315 100%);
+                filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#d0451b', endColorstr='#bc3315',GradientType=0);
+                background-color:#d0451b;
+                -moz-border-radius:6px;
+                -webkit-border-radius:6px;
+                border-radius:6px;
+                border:1px solid #942911;
+                display:inline-block;
+                cursor:pointer;
+                color:#ffffff;
+                font-family:Arial;
+                font-size:15px;
+                font-weight:bold;
+                padding:15px 76px;
+                text-decoration:none;
+                text-shadow:0px 1px 0px #528009;
+                margin-top: 20px;
+            }
+            .CloseButton:hover {
+                background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #bc3315), color-stop(1, #d0451b));
+                background:-moz-linear-gradient(top, #bc3315 5%, #d0451b 100%);
+                background:-webkit-linear-gradient(top, #bc3315 5%, #d0451b 100%);
+                background:-o-linear-gradient(top, #bc3315 5%, #d0451b 100%);
+                background:-ms-linear-gradient(top, #bc3315 5%, #d0451b 100%);
+                background:linear-gradient(to bottom, #bc3315 5%, #d0451b 100%);
+                filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#bc3315', endColorstr='#d0451b',GradientType=0);
+                background-color:#bc3315;
+            }
+            .CloseButton:active {
+                position:relative;
+                top:1px;
+            }
+
+        </style>
+</head>
+	</HEAD>
+<BODY>
+	<script>
+		function sendData(command,data,callback){
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function(){
+				if(this.readyState == 4 && this.status == 200){
+					console.log('command is sened');
+					if(callback){
+						callback(this.responseText);
+					}
+				}
+			};
+			let commandText = "command?"+command+"="+data;
+			xhttp.open("GET",commandText,true);
+			xhttp.send();
+		}
+		function getData(request,callback){
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function(){
+				if(this.readyState == 4 && this.status == 200){
+					console.log('get data done : '+this.responseText);
+					if(callback){
+						callback(this.responseText);
+					}
+				}
+			};
+			xhttp.open("GET",request,true);
+			xhttp.send();
+		}
+		function changeDisplayIMG(state){
+			console.log(state);
+			if(state == 'opening'){
+				document.getElementById('displayIMG').src = '\opening.gif' ;
+			}
+			else if(state == 'closing'){
+				document.getElementById('displayIMG').src = '\closing.gif' ;
+			}
+			else if(state == 'opened'){
+				document.getElementById('displayIMG').src = '\opened.png' ;
+			}
+			else{
+				document.getElementById('displayIMG').src = '\closed.png' ;
+			}
+		}
+		function getGateState(){
+			let gateStatueRequest = "request?gate=state";
+			getData(gateStatueRequest,function(e){changeDisplayIMG(e);});
+		}
+		getGateState();
+		setInterval(function(){getGateState();},2000)
+	</script>
+	<CENTER>
+        <h1>Gate Control v.1.0</h1><br>
+        <img id ='displayIMG' src='\closed.png' alt=''>
+        <br><a class="OpenButton" onclick = "sendData('gate','open',false);">Open</a>
+        <br><a class="CloseButton" onclick = "sendData('gate','close',false);">Close</a>
+    </CENTER>	
+</BODY>
+</HTML>
